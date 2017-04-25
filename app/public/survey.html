@@ -9,12 +9,13 @@
     <script src="https://code.jquery.com/jquery.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
     <!-- Chosen -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.5.1/chosen.css">
 </head>
 
 <body>
     <div class="container">
-        <h2>Survey Questions</h2>
+        <h2>Survey Questions <a href="/"><button type="button" class="pull-right btn btn-primary btn-lg"><span class="glyphicon glyphicon-home"></span> Home</button></a></h2>
         <hr>
         <h3><strong>About You</strong></h3>
         <h4>Name (Required)</h4>
@@ -133,7 +134,7 @@
     <div class="panel panel-default">
             <p>Control Panel</p>
             <p>
-                <a href="/api/friends">API Friends list</a> |
+                <a id="/api/friends">API Friends list</a> |
                 <a href="">Github Repo</a></p>
         </div>
     <!-- Modal -->
@@ -147,7 +148,7 @@
                 </div>
                 <div class="modal-body">
                     <h2 id="matchName"></h2>
-                    <img id="matchImg" src="https://media.licdn.com/mpr/mpr/shrinknp_400_400/p/6/005/064/1bd/3435aa3.jpg" alt="">
+                    <img id="matchImg" src="" alt="">
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -156,7 +157,61 @@
         </div>
     </div>
     <script type="text/javascript">
+     var totalDiff = [];
+    $("#submit").on("click",function (){
+        var choiceArr = [];
+        var name = $('#name').val().trim();
+        var photo = $('#photo').val().trim();
+        for(var i = 1; i < 11;i++){
+          var choice = $("#q"+ i).val().trim();
+
+          choiceArr.push(choice);
+        }
+        var Friend = {
+            name:name,
+            photo:photo,
+            choice:choiceArr
+        }
+        $.post("/api/friends",Friend);
+
+        $.get("/api/friends",function(data){
+
+            data.pop();
+            var scores = data.map(function(e){
+                   
+               totalDifference(e.choice,choiceArr);
+            });
+            
+        });
+        var totalUser = choiceArr.reduce(function(a,b){
+            return a +b;
+        })
+
+         bestMatch(totalUser,totalDiff);
+
+    });
+  
+    function totalDifference(fScore,pScore){
+       var comparedNum = []
+        for(var i = 0;i < pScore.length;i++){
+            var difference = Math.abs(pScore[i] - fScore[i]);
+            comparedNum.push(difference);
+
+        }
+            var result = comparedNum.reduce(function(a,b){
+                 return a + b;
+            })
+       totalDiff.push(result);
+    }
+    function bestMatch(user,friends){
+            console.log(friends);
+    }
+     
+
+
+    
     </script>
+    }
 </body>
 
 </html>

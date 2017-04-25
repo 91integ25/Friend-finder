@@ -2,7 +2,9 @@ var express = require("express");
 var path = require("path");
 var bodyParser = require("body-parser");
 var app = express();
-var PORT = 3000;
+var PORT = process.env.PORT || 8080;
+var htmlRoutes = require("./app/routing/htmlRoutes");
+var apiRoutes = require("./app/routing/apiRoutes");
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
@@ -12,13 +14,11 @@ app.use(bodyParser.text());
 app.use(bodyParser.json({
 	type:"application/vnd.api+json"
 }));
-app.get("/",function(req,res){
-	res.sendFile(path.join(__dirname,"home.html"));
-});
-app.get("/survey",function(req,res){
-	res.sendFile(path.join(__dirname,"survey.html"))
-})
+
+htmlRoutes(app);
+apiRoutes(app);
+
 
 app.listen(PORT,function(){
 	console.log("Listening on PORT:",PORT);
-})
+});
