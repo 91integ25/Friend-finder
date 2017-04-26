@@ -174,39 +174,11 @@
         }
         $.post("/api/friends",Friend);
 
-        $.get("/api/friends",function(data){
-
-            data.pop();
-            var scores = data.map(function(e){
-                   
-               totalDifference(e.choice,choiceArr);
-            });
-            
+        $.get("/api/bestMatch",function(data){
+            console.log("got data ", data);
         });
-        var totalUser = choiceArr.reduce(function(a,b){
-            return a +b;
-        })
-
-         bestMatch(totalUser,totalDiff);
-
-    });
+});
   
-    function totalDifference(fScore,pScore){
-       var comparedNum = []
-        for(var i = 0;i < pScore.length;i++){
-            var difference = Math.abs(pScore[i] - fScore[i]);
-            comparedNum.push(difference);
-
-        }
-            var result = comparedNum.reduce(function(a,b){
-                 return a + b;
-            })
-       totalDiff.push(result);
-    }
-    function bestMatch(user,friends){
-            console.log(friends);
-    }
-     
 
 
     
