@@ -126,7 +126,7 @@
         </select>
         <br>
         <br>
-        <button type="submit" class="btn btn-primary btn-lg btn-block" id="submit"><i class="fa fa-check-circle" aria-hidden="true"></i> Submit
+        <button type="submit" class="btn btn-primary btn-lg btn-block reset" id="submit" data-toggle="modal" data-target="resultsModal" data-whatever="showm"><i class="fa fa-check-circle" aria-hidden="true"></i> Submit
         </button>
         <br>
         <br>
@@ -134,8 +134,8 @@
     <div class="panel panel-default">
             <p>Control Panel</p>
             <p>
-                <a id="/api/friends">API Friends list</a> |
-                <a href="">Github Repo</a></p>
+                <a href="/api/friends">API Friends list</a> |
+                <a href="https://github.com/91integ25/Friend-finder">Github Repo</a></p>
         </div>
     <!-- Modal -->
     <div id="resultsModal" class="modal fade" role="dialog">
@@ -157,15 +157,19 @@
         </div>
     </div>
     <script type="text/javascript">
-     var totalDiff = [];
     $("#submit").on("click",function (){
         var choiceArr = [];
         var name = $('#name').val().trim();
         var photo = $('#photo').val().trim();
         for(var i = 1; i < 11;i++){
           var choice = $("#q"+ i).val().trim();
-
-          choiceArr.push(choice);
+          if(choice === "" || name === "" || photo === ""){
+            return alert("You must answer all questions");
+          }
+          else{
+            choiceArr.push(choice);
+          }
+          
         }
         var Friend = {
             name:name,
@@ -175,9 +179,12 @@
         $.post("/api/friends",Friend);
 
         $.get("/api/bestMatch",function(data){
-            console.log("got data ", data);
+        alert("your best match is: "+data[0].name+" here is their photo: "+data[0].photo)
         });
-});
+    });
+    $(".reset").click(function() {
+        $(this).closest('form').find("input[type=text], textarea").val("");
+    });
   
 
 
