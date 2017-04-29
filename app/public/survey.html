@@ -164,16 +164,16 @@
         if(choice === "" || name === "" || photo === ""){
         return alert("You must answer all questions");
           }
-          else{
-        for(var i = 1; i < 11;i++){
-          var choice = $("#q"+ i).val().trim();
-     
-            choiceArr.push(choice);
-            $("#q"+ i).val("");
-          }
-        $.get("/api/bestMatch",function(data){
-            bestMatch(data);
-        });
+        else{
+            for(var i = 1; i < 11;i++){
+              var choice = $("#q"+ i).val().trim();
+         
+                choiceArr.push(choice);
+                $("#q"+ i).val("");
+              }
+            $.get("/api/bestMatch",function(data){
+                bestMatch(data);
+            });
 
         }
         var Friend = {
@@ -186,7 +186,7 @@
 
     });
 
-  function bestMatch(data){
+function bestMatch(data){
 
 $('#resultsModal').on('show.bs.modal', callback(event,data));
    
@@ -196,7 +196,7 @@ $('#resultsModal').on('show.bs.modal', callback(event,data));
   var button = $(event.relatedTarget) // Button that triggered the modal
   var recipient = button.data('whatever');
   console.log(data)
-    $('#matchImg').val(data[0].photo);
+    $('#matchImg').text(data[0].photo);
     $('#matchName').text(data[0].name);
 }
 
