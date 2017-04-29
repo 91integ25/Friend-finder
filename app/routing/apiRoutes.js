@@ -15,6 +15,7 @@ app.get("/api/friends",function(req,res){
 res.json(friendsList);
 });
 }
+
 function bestMatch(){
 	var bestMatch = [];
 	var comparedArr = [];

@@ -126,7 +126,7 @@
         </select>
         <br>
         <br>
-        <button type="submit" class="btn btn-primary btn-lg btn-block reset" id="submit" data-toggle="modal" data-target="resultsModal" data-whatever="showm"><i class="fa fa-check-circle" aria-hidden="true"></i> Submit
+        <button type="submit" class="btn btn-primary btn-lg btn-block reset" id="submit" data-target = "#resultsModal" data-toggle="modal" data-whatever= "submit"><i class="fa fa-check-circle" aria-hidden="true"></i> Submit
         </button>
         <br>
         <br>
@@ -148,7 +148,7 @@
                 </div>
                 <div class="modal-body">
                     <h2 id="matchName"></h2>
-                    <img id="matchImg" src="" alt="">
+                    <h3 id="matchImg"></h3>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -168,8 +168,9 @@
           }
           else{
             choiceArr.push(choice);
+            $("#q"+ i).val("");
+            bestMatch();
           }
-          
         }
         var Friend = {
             name:name,
@@ -178,14 +179,25 @@
         }
         $.post("/api/friends",Friend);
 
+
+    });
+
+  function bestMatch(){
         $.get("/api/bestMatch",function(data){
-        alert("your best match is: "+data[0].name+" here is their photo: "+data[0].photo)
+
+       $('#resultsModal').on('show.bs.modal', callback(event,data));
+
         });
-    });
-    $(".reset").click(function() {
-        $(this).closest('form').find("input[type=text], textarea").val("");
-    });
-  
+   
+  }
+
+  function callback(event,data) {
+  // var button = $(event.relatedTarget) // Button that triggered the modal
+  // var recipient = button.data('whatever');
+  // console.log(data)
+    $('#matchImg').val(data[0].photo);
+    $('#matchName').text(data[0].name);
+}
 
 
     
