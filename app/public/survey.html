@@ -148,7 +148,7 @@
                 </div>
                 <div class="modal-body">
                     <h2 id="matchName"></h2>
-                    <h3 id="matchImg"></h3>
+                    <h2 id="matchImg"></h2>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -161,16 +161,20 @@
         var choiceArr = [];
         var name = $('#name').val().trim();
         var photo = $('#photo').val().trim();
-        for(var i = 1; i < 11;i++){
-          var choice = $("#q"+ i).val().trim();
-          if(choice === "" || name === "" || photo === ""){
-            return alert("You must answer all questions");
+        if(choice === "" || name === "" || photo === ""){
+        return alert("You must answer all questions");
           }
           else{
+        for(var i = 1; i < 11;i++){
+          var choice = $("#q"+ i).val().trim();
+     
             choiceArr.push(choice);
             $("#q"+ i).val("");
-            bestMatch();
           }
+        $.get("/api/bestMatch",function(data){
+            bestMatch(data);
+        });
+
         }
         var Friend = {
             name:name,
@@ -182,19 +186,16 @@
 
     });
 
-  function bestMatch(){
-        $.get("/api/bestMatch",function(data){
+  function bestMatch(data){
 
-       $('#resultsModal').on('show.bs.modal', callback(event,data));
-
-        });
+$('#resultsModal').on('show.bs.modal', callback(event,data));
    
   }
 
   function callback(event,data) {
-  // var button = $(event.relatedTarget) // Button that triggered the modal
-  // var recipient = button.data('whatever');
-  // console.log(data)
+  var button = $(event.relatedTarget) // Button that triggered the modal
+  var recipient = button.data('whatever');
+  console.log(data)
     $('#matchImg').val(data[0].photo);
     $('#matchName').text(data[0].name);
 }
