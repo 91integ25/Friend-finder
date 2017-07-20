@@ -187,12 +187,10 @@
     });
 
 function bestMatch(data){
-
 $('#resultsModal').on('show.bs.modal', callback(event,data));
-   
-  }
+}
 
-  function callback(event,data) {
+function callback(event,data) {
   var button = $(event.relatedTarget) // Button that triggered the modal
   var recipient = button.data('whatever');
   console.log(data)

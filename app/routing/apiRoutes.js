@@ -16,6 +16,7 @@ res.json(friendsList);
 });
 }
 
+
 function bestMatch(){
 	var bestMatch = [];
 	var comparedArr = [];
